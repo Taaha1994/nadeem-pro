@@ -8,7 +8,16 @@ const rateLimit  = require("express-rate-limit");
 const app   = express();
 const cache = new NodeCache({ stdTTL: 3600 }); // 1hr cache
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://nadeem-frontend-delta.vercel.app",
+    "http://localhost:5173",
+    /\.vercel\.app$/,
+  ],
+  methods: ["GET","POST","OPTIONS"],
+  allowedHeaders: ["Content-Type","Authorization"],
+  credentials: true,
+}));
 app.use(express.json());
 
 const limiter = rateLimit({ windowMs: 60000, max: 30 });
